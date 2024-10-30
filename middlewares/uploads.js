@@ -1,4 +1,4 @@
-import multer from multer;
+import multer from "multer";
 import { multerSaveFilesOrg } from "multer-savefilesorg";
 
 export const remoteUpload = multer({
