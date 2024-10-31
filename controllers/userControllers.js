@@ -4,29 +4,33 @@ import bcrypt from "bcryptjs";
 
 export const userRegister = async (req, res, next) => {
   try {
-    // validate user input
+    // Validate user input
     const { error, value } = userRegisterValidator.validate({
-        ...value,
-        profilePicture: req.file?.filename
+      ...req.body,
+      profilePicture: req.file?.filename,
     });
     if (error) {
       return res.status(422).json(error);
-    } else {
-      // check for user availability
-      const user = await UserModel.findOne({ email: value.email });
-      if (user) {
-        return res.status(409).json("User already exist");
-      } else {
-        const hashedPassword = bcrypt.hashSync(value.password, 10);
-        // Creating a new user in the database and adding the hashed password to it
-        await UserModel.create ({
-            ...value,
-            password: hashedPassword
-        })
-      }
     }
-    res.status(201).json("You have been successfully registered")
+
+    // Check if the user already exists
+    const user = await UserModel.findOne({ email: value.email });
+    if (user) {
+      return res.status(409).json("User already exists");
+    }
+
+    // Hash the password
+    const hashedPassword = bcrypt.hashSync(value.password, 10);
+
+    // Create a new user in the database
+    await UserModel.create({
+      ...value,
+      password: hashedPassword,
+    });
+
+    return res.status(201).json("You have been successfully registered");
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

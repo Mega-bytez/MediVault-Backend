@@ -4,6 +4,10 @@ import { remoteUpload } from "../middlewares/uploads.js";
 
 const userRouter = Router();
 
-userRouter.post("/addUser", remoteUpload.single("profilePicture"), userRegister);
+userRouter.post(
+  "/register",
+  remoteUpload.single("profilePicture"),
+  userRegister
+);
 
 export default userRouter;
