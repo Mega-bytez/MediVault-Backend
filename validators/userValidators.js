@@ -10,3 +10,8 @@ export const userRegisterValidator = Joi.object({
   dateOfBirth: Joi.date().required(),
   role: Joi.string().valid("user", "vendor").required(),
 });
+
+export const userLoginValidator = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+})
