@@ -2,9 +2,10 @@ import { UserModel } from "../models/userModels.js";
 import {
   userLoginValidator,
   userRegisterValidator,
+  userUpdateValidator,
 } from "../validators/userValidators.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
 export const userRegister = async (req, res, next) => {
   try {
@@ -63,7 +64,54 @@ export const userLogin = async (req, res, next) => {
     res.json({
       message: "User logged In",
       accessToken: token,
+      firstname: `${user.firstName}`,
+      lastname: `${user.lastName}`,
+      profilePicture: `${user.profilePicture}`,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getProfile = async (req, res, next) => {
+  try {
+    const user = await UserModel.findById(req.auth.id);
+    if (!user) {
+      res.status(404).json("No user available");
+    }
+    return res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const userUpdate = async (req, res, next) => {
+  try {
+    const { error, value } = userUpdateValidator.validate(req.body);
+    if (error) {
+      res.status(422).json(error);
+    }
+    const updateProfile = await UserModel.findByIdAndUpdate(
+      req.auth.id,
+      req.body,
+      { new: true }
+    );
+    if (!updateProfile) {
+      return res.status(404).json("Update was unsucessful");
+    }
+    return res.status(200).json(updateProfile);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const userDelete = async (req, res, next) => {
+  try {
+    const deleteUser = await UserModel.findByIdAndDelete(req.auth.id);
+    if (!deleteUser) {
+      return res.status(404).json("Unable to delete user");
+    }
+    res.status(200).json("User deleted Sucessfully");
   } catch (error) {
     next(error);
   }
