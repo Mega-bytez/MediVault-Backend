@@ -61,7 +61,7 @@ export const userLogin = async (req, res, next) => {
     const token = jwt.sign({ id: user.id }, process.env.JWT_PRIVATE_KEY, {
       expiresIn: "24h",
     });
-    res.json({
+    return res.json({
       message: "User logged In",
       accessToken: token,
       firstname: `${user.firstName}`,
@@ -99,7 +99,10 @@ export const userUpdate = async (req, res, next) => {
     if (!updateProfile) {
       return res.status(404).json("Update was unsucessful");
     }
-    return res.status(200).json(updateProfile);
+    return res.status(200).json({
+      message: "Update sucessful",
+      details: updateProfile
+    });
   } catch (error) {
     next(error);
   }
@@ -116,3 +119,12 @@ export const userDelete = async (req, res, next) => {
     next(error);
   }
 };
+
+export const userLogout = async (req, res, next) => {
+  try {
+    res.clearCookie("accessToken");
+    res.status(200).json({message:"User Logged Out"})
+  } catch (error) {
+    next(error)
+  }
+}
