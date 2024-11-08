@@ -128,3 +128,15 @@ export const userLogout = async (req, res, next) => {
     next(error)
   }
 }
+
+export const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await UserModel.find()
+    if(!users){
+      res.status(404).json("No Users in the database")
+    }
+    return res.status(200).json(users)
+  } catch (error) {
+    next(error)
+  }
+}
