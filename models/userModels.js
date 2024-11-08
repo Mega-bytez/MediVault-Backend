@@ -13,6 +13,7 @@ const userSchema = new Schema(
     role: {
       type: String,
       enum: ["user", "vendor"],
+      default: "vendor",
     },
   },
   { timestamps: true }
