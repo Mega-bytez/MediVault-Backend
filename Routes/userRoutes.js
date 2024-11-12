@@ -6,9 +6,9 @@ import { isAuthenticated } from "../middlewares/auth.js";
 const userRouter = Router();
 
 userRouter.post("/register", remoteUpload.single("profilePicture"), userRegister);
-userRouter.post("/login", userLogin);
+userRouter.post("/login", remoteUpload.none(), userLogin);
 userRouter.get("/profile", isAuthenticated, getProfile);
-userRouter.patch("/update", isAuthenticated, userUpdate);
+userRouter.patch("/update", isAuthenticated,  remoteUpload.single("profilePicture"), userUpdate);
 userRouter.delete("/delete", isAuthenticated, userDelete);
 userRouter.post("/logout", isAuthenticated, userLogout);
 userRouter.get("/allUsers", getAllUsers);

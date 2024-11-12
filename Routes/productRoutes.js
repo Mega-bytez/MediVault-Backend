@@ -5,7 +5,7 @@ import { remoteUpload } from "../middlewares/uploads.js";
 
 const productRouter = Router()
 
-productRouter.post("/addProduct",  isAuthenticated, hasPermissions("add_VendorProduct"), remoteUpload.array("image", 10), addProduct);
+productRouter.post("/addProduct",  isAuthenticated, hasPermissions("add_VendorProduct"), remoteUpload.fields([{ name: "image", maxCount: 10 },{ name: "thumbImage", maxCount: 1 }]), addProduct);
 productRouter.get("/getAllProduct", isAuthenticated, hasPermissions("view_AllProduct"), getAllProduct);
 productRouter.get("/getOneProduct/:id", isAuthenticated, hasPermissions("view_OneProduct"), getOneProduct);
 productRouter.get("/vendorPro", isAuthenticated, hasPermissions("view_VendorProduct"), vendorProduct);

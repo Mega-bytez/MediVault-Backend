@@ -10,6 +10,10 @@ import jwt from "jsonwebtoken";
 export const userRegister = async (req, res, next) => {
   try {
     // Validate user input
+    console.log(req.body);
+    if (typeof req.body.address === "string") {
+      req.body.address = JSON.parse(req.body.address);
+    }
     const { error, value } = userRegisterValidator.validate({
       ...req.body,
       profilePicture: req.file?.filename,
@@ -21,7 +25,7 @@ export const userRegister = async (req, res, next) => {
     // Check if the user already exists
     const user = await UserModel.findOne({ email: value.email });
     if (user) {
-      return res.status(409).json("User already exists");
+      return res.status(409).json("Pharmacy already exists");
     }
 
     // Hash the password
@@ -33,7 +37,9 @@ export const userRegister = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    return res.status(201).json("You have been successfully registered");
+    return res
+      .status(201)
+      .json("Your Pharmacy have been successfully registered");
   } catch (error) {
     console.log(error);
     next(error);
@@ -64,8 +70,7 @@ export const userLogin = async (req, res, next) => {
     return res.json({
       message: "User logged In",
       accessToken: token,
-      firstname: `${user.firstName}`,
-      lastname: `${user.lastName}`,
+      name: `${user.name}`,
       profilePicture: `${user.profilePicture}`,
     });
   } catch (error) {
@@ -87,21 +92,27 @@ export const getProfile = async (req, res, next) => {
 
 export const userUpdate = async (req, res, next) => {
   try {
-    const { error, value } = userUpdateValidator.validate(req.body);
+    if (typeof req.body.address === "string") {
+      req.body.address = JSON.parse(req.body.address);
+    }
+    const { error, value } = userUpdateValidator.validate({
+      ...req.body,
+      profilePicture: req.file?.filename,
+    });
     if (error) {
-      res.status(422).json(error);
+      return res.status(422).json(error);
     }
     const updateProfile = await UserModel.findByIdAndUpdate(
       req.auth.id,
-      req.body,
+      value,
       { new: true }
     );
     if (!updateProfile) {
       return res.status(404).json("Update was unsucessful");
     }
     return res.status(200).json({
-      message: "Update sucessful",
-      details: updateProfile
+      message: "Update is sucessful",
+      details: updateProfile,
     });
   } catch (error) {
     next(error);
@@ -122,21 +133,26 @@ export const userDelete = async (req, res, next) => {
 
 export const userLogout = async (req, res, next) => {
   try {
-    res.clearCookie("accessToken");
-    res.status(200).json({message:"User Logged Out"})
+    const token = req.headers.authorization.split(" ")[1];
+    if (!token) {
+      return res.status(404).json({ message: "No token available" });
+    }
+    const decoded = jwt.decode(token);
+    const expiresAt = new Date(decoded.exp * 100);
+    res.status(200).json({ message: "User Logged Out" });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 export const getAllUsers = async (req, res, next) => {
   try {
-    const users = await UserModel.find()
-    if(!users){
-      res.status(404).json("No Users in the database")
+    const users = await UserModel.find();
+    if (!users) {
+      res.status(404).json("No Users in the database");
     }
-    return res.status(200).json(users)
+    return res.status(200).json(users);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};

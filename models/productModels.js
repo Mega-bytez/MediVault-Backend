@@ -6,27 +6,41 @@ const productSchema = new Schema({
     type: Types.ObjectId,
     ref: "User",
   },
-  name: {
+  name: { type: String },
+  description: { type: String },
+  category: {
     type: String,
+    enum: [
+      "Over-the-Counter(Medications)",
+      "Vitamins and Supplements",
+      "Personal Care Product",
+      "Medical Equipments and devices",
+      "Lifestyle and Wellness",
+      "Sexual Health",
+    ],
   },
-  description: {
-    type: String,
-  },
-  manufacturer: {
-    type: String,
-  },
-  countryOfOrigin: {
-    type: String,
-  },
+  brandName: { type: String },
+  manufacturer: { type: String },
+  dosage: { type: String },
+  strength: { type: String },
+  quantityPerPackage: { type: String },
+  prescription: { type: String },
+  countryOfOrigin: { type: String },
   audience: { type: String, enum: ["adult", "children", "Teenage"] },
-  symptoms: {
+  symptoms: { type: String },
+  image: [{ type: String }],
+  thumbImage: { type: String },
+  price: { type: Number },
+  status: {
     type: String,
+    enum: ["available", "Out of stock", "Discontinued"],
+    default: "available",
   },
-  dosage: {
-    type: String,
-  },
-  image: 
-    [{type: String}],
+  stockQuantity: { type: Number },
+  expiryDate: { type: Date },
+  precautions: { type: String }, 
+  sideEffect: { type: String },
+  storageInstruction: { type: String },
 });
 
 productSchema.plugin(toJSON);

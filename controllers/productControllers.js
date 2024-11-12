@@ -11,7 +11,13 @@ export const addProduct = async (req, res, next) => {
     // }
     const { error, value } = addProductValidator.validate({
       ...req.body,
-      image: req?.files?.map((file) => file.filename),
+      image: req?.files?.image
+        ? req.files.image.map((file) => file.filename)
+        : [],
+      thumbImage:
+        req?.files?.thumbImage && req.files.thumbImage[0]
+          ? req.files.thumbImage[0].filename
+          : null,
     });
     if (error) {
       res.status(422).json(error);
@@ -53,10 +59,17 @@ export const getOneProduct = async (req, res, next) => {
 
 export const vendorProduct = async (req, res, next) => {
   try {
-    const { filter = "{}", sort = "{}", limit = 100, skip = 0 } = req.query;
+    const {
+      filter = "{}",
+      sort = "{}",
+      limit = 100,
+      skip = 0,
+      category,
+    } = req.query;
     const product = await ProductModel.find({
       ...JSON.parse(filter),
       user: req.auth.id,
+      ...(category && { category }),
     })
       .sort(JSON.parse(sort))
       .limit(limit)
@@ -71,22 +84,28 @@ export const updateProduct = async (req, res, next) => {
   try {
     const { error, value } = updateProductValidator.validate({
       ...req.body,
-      image: req.file?.filename,
+      image: req?.files?.image
+        ? req.files.image.map((file) => file.filename)
+        : [],
+      thumbImage:
+        req?.files?.thumbImage && req.files.thumbImage[0]
+          ? req.files.thumbImage[0].filename
+          : null,
     });
     const updatedProduct = await ProductModel.findOneAndUpdate(
-      { _id: req.params.id, user: req.auth.id },
-      { ...req.body, image: req.filename?.filename },
+      { user: req.auth.id, _id: req.params.id, },
+      value,
       { new: true }
     );
     if (!updatedProduct) {
-      res.status(404).json("Update wasn't succesful");
+      return res.status(404).json("Update wasn't succesful");
     }
     res.status(200).json(updatedProduct);
   } catch (error) {
     next(error);
   }
 };
-
+//_id: req.params.id,
 export const deleteProduct = async (req, res, next) => {
   try {
     const deletedProduct = await ProductModel.findOneAndDelete({
