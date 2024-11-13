@@ -1,4 +1,6 @@
 import { UserModel } from "../models/userModels.js";
+import { mailTransporter } from "../utils/mail.js";
+import { signUpTemplate } from "../utils/templates.js";
 import {
   userLoginValidator,
   userRegisterValidator,
@@ -10,7 +12,6 @@ import jwt from "jsonwebtoken";
 export const userRegister = async (req, res, next) => {
   try {
     // Validate user input
-    console.log(req.body);
     if (typeof req.body.address === "string") {
       req.body.address = JSON.parse(req.body.address);
     }
@@ -36,6 +37,14 @@ export const userRegister = async (req, res, next) => {
       ...value,
       password: hashedPassword,
     });
+    await mailTransporter.sendMail({
+      from: `MEDIVAULT<bboaduboateng2000@gmail.com>`,
+      to: value.email,
+      subject: "Registration with MedVault",
+      html: signUpTemplate(`<p>${value.name} has been registered sucessfully with Medvault </p>
+      <p> Thank you for registering `,)
+      
+    })
 
     return res
       .status(201)
