@@ -18,6 +18,7 @@ export const userRegister = async (req, res, next) => {
     const { error, value } = userRegisterValidator.validate({
       ...req.body,
       profilePicture: req.file?.filename,
+      backgroundImage: req.file?.filename,
     });
     if (error) {
       return res.status(422).json(error);
@@ -90,6 +91,18 @@ export const userLogin = async (req, res, next) => {
 export const getProfile = async (req, res, next) => {
   try {
     const user = await UserModel.findById(req.auth.id);
+    if (!user) {
+      res.status(404).json("No user available");
+    }
+    return res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getProfileNoAuth = async (req, res, next) => {
+  try {
+    const user = await UserModel.findById(req.params.id);
     if (!user) {
       res.status(404).json("No user available");
     }

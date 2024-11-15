@@ -8,6 +8,7 @@ export const userRegisterValidator = Joi.object({
   mobileNumber: Joi.string().pattern(/^[0-9]+$/),
   password: Joi.string().min(6).required(),
   profilePicture: Joi.string().optional(),
+  backgroundImage: Joi.string().optional(),
   role: Joi.string().valid("user", "vendor"),
   address: Joi.array()
     .items(
@@ -18,6 +19,14 @@ export const userRegisterValidator = Joi.object({
       })
     )
     .required(),
+  socials: Joi.array().items(
+    Joi.object({
+      facebook: Joi.string(),
+      instagram: Joi.string(),
+      twitter: Joi.string(),
+      WhatsApp: Joi.string(),
+    })
+  ),
 });
 
 export const userLoginValidator = Joi.object({
@@ -33,6 +42,7 @@ export const userUpdateValidator = Joi.object({
   mobileNumber: Joi.string().pattern(/^[0-9]+$/),
   password: Joi.string().min(6),
   profilePicture: Joi.string().optional(),
+  backgroundImage: Joi.string().optional(),
   role: Joi.string().valid("user", "vendor"),
   address: Joi.array().items(
     Joi.object({

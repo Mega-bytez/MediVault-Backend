@@ -10,17 +10,27 @@ const userSchema = new Schema(
     mobileNumber: { type: String },
     password: { type: String },
     profilePicture: { type: String },
+    backgroundImage: { type: String },
+    workingHours: { type: String },
     role: {
       type: String,
       enum: ["user", "vendor"],
       default: "vendor",
     },
     address: [
-      { 
+      {
         region: { type: String },
         town: { type: String },
         street: { type: String },
-      }
+      },
+    ],
+    socials: [
+      {
+        facebook: { type: String },
+        instagram: { type: String },
+        twitter: { type: String },
+        WhatsApp: { type: String },
+      },
     ],
   },
   { timestamps: true }

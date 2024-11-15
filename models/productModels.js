@@ -24,9 +24,13 @@ const productSchema = new Schema({
   dosage: { type: String },
   strength: { type: String },
   quantityPerPackage: { type: String },
+  prescriptionRequirements: {
+    type: String,
+    enum: ["prescription", "Over-the-Counter"],
+  },
   prescription: { type: String },
   countryOfOrigin: { type: String },
-  audience: { type: String, enum: ["adult", "children", "Teenage"] },
+  patient: { type: String, enum: ["adult", "children", "Teenage"] },
   symptoms: { type: String },
   image: [{ type: String }],
   thumbImage: { type: String },
@@ -38,7 +42,7 @@ const productSchema = new Schema({
   },
   stockQuantity: { type: Number },
   expiryDate: { type: Date },
-  precautions: { type: String }, 
+  precautions: { type: String },
   sideEffect: { type: String },
   storageInstruction: { type: String },
 });

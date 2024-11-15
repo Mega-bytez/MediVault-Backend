@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addProduct, countAllProduct, countProduct, deleteProduct, getAllProduct, getOneProduct, updateProduct, vendorProduct } from "../controllers/productControllers.js";
+import { addProduct, countAllProduct, countProduct, deleteProduct, getAllProduct, getOneProduct, updateProduct, vendorProduct, vendorProductNoId } from "../controllers/productControllers.js";
 import { hasPermissions, isAuthenticated } from "../middlewares/auth.js";
 import { remoteUpload } from "../middlewares/uploads.js";
 
@@ -9,6 +9,7 @@ productRouter.post("/addProduct",  isAuthenticated, hasPermissions("add_VendorPr
 productRouter.get("/getAllProduct", getAllProduct);
 productRouter.get("/getOneProduct/:id", isAuthenticated, hasPermissions("view_OneProduct"), getOneProduct);
 productRouter.get("/vendorPro", isAuthenticated, hasPermissions("view_VendorProduct"), vendorProduct);
+productRouter.get("/vendorPro/:id", vendorProductNoId);
 productRouter.patch("/update/:id", isAuthenticated, hasPermissions("add_VendorProduct"), updateProduct);
 productRouter.delete("/delete/:id", isAuthenticated, hasPermissions("delete_VendorProduct"), deleteProduct);
 productRouter.get("/countVendor", isAuthenticated, hasPermissions("update_VendorProduct"), countProduct);

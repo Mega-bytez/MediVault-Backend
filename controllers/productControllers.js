@@ -80,6 +80,29 @@ export const vendorProduct = async (req, res, next) => {
   }
 };
 
+export const vendorProductNoId = async (req, res, next) => {
+  try {
+    const {
+      filter = "{}",
+      sort = "{}",
+      limit = 100,
+      skip = 0,
+      category,
+    } = req.query;
+    const product = await ProductModel.find({
+      ...JSON.parse(filter),
+      user: req.params.id,
+      ...(category && { category }),
+    })
+      .sort(JSON.parse(sort))
+      .limit(limit)
+      .skip(skip);
+    return res.status(200).json(product);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updateProduct = async (req, res, next) => {
   try {
     const { error, value } = updateProductValidator.validate({
@@ -97,6 +120,7 @@ export const updateProduct = async (req, res, next) => {
       value,
       { new: true }
     );
+    console.log(updatedProduct)
     if (!updatedProduct) {
       return res.status(404).json("Update wasn't succesful");
     }
