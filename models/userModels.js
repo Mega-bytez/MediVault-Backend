@@ -7,7 +7,7 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true },
     licenseNumber: { type: String, required: true, unique: true },
     registrationNumber: { type: String, required: true, unique: true },
-    mobileNumber: { type: String },
+    mobileNumber: { type: Number },
     password: { type: String },
     profilePicture: { type: String },
     backgroundImage: { type: String },
