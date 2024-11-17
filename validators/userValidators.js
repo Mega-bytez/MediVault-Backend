@@ -10,23 +10,13 @@ export const userRegisterValidator = Joi.object({
   profilePicture: Joi.string().optional(),
   backgroundImage: Joi.string().optional(),
   role: Joi.string().valid("user", "vendor"),
-  address: Joi.array()
-    .items(
-      Joi.object({
-        region: Joi.string(),
-        town: Joi.string(),
-        street: Joi.string(),
-      })
-    )
-    .required(),
-  socials: Joi.array().items(
-    Joi.object({
-      facebook: Joi.string(),
-      instagram: Joi.string(),
-      twitter: Joi.string(),
-      WhatsApp: Joi.string(),
-    })
-  ),
+  region: Joi.string(),
+  town: Joi.string(),
+  street: Joi.string(),
+  facebook: Joi.string(),
+  instagram: Joi.string(),
+  twitter: Joi.string(),
+  WhatsApp: Joi.string(),
 });
 
 export const userLoginValidator = Joi.object({
@@ -44,11 +34,11 @@ export const userUpdateValidator = Joi.object({
   profilePicture: Joi.string().optional(),
   backgroundImage: Joi.string().optional(),
   role: Joi.string().valid("user", "vendor"),
-  address: Joi.array().items(
-    Joi.object({
-      region: Joi.string(),
-      town: Joi.string(),
-      street: Joi.string(),
-    })
-  ),
+  region: Joi.string(),
+  town: Joi.string(),
+  street: Joi.string(),
+  facebook: Joi.string(),
+  instagram: Joi.string(),
+  twitter: Joi.string(),
+  WhatsApp: Joi.string(),
 });

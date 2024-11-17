@@ -17,21 +17,13 @@ const userSchema = new Schema(
       enum: ["user", "vendor"],
       default: "vendor",
     },
-    address: [
-      {
-        region: { type: String },
-        town: { type: String },
-        street: { type: String },
-      },
-    ],
-    socials: [
-      {
-        facebook: { type: String },
-        instagram: { type: String },
-        twitter: { type: String },
-        WhatsApp: { type: String },
-      },
-    ],
+    region: { type: String },
+    town: { type: String },
+    street: { type: String },
+    facebook: { type: String },
+    instagram: { type: String },
+    twitter: { type: String },
+    WhatsApp: { type: String },
   },
   { timestamps: true }
 );

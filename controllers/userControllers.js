@@ -12,10 +12,10 @@ import jwt from "jsonwebtoken";
 export const userRegister = async (req, res, next) => {
   try {
     // Validate user input
-    if (typeof req.body.address === "string" || req.body.address === "string" ) {
-      req.body.address = JSON.parse(req.body.address);
-      req.body.socials = JSON.parse(req.body.socials);
-    }
+    // if (typeof req.body.address === "string" || req.body.address === "string" ) {
+    //   req.body.address = JSON.parse(req.body.address);
+    //   req.body.socials = JSON.parse(req.body.socials);
+    // }
     const { error, value } = userRegisterValidator.validate({
       ...req.body,
       profilePicture: req.file?.filename,
@@ -115,10 +115,10 @@ export const getProfileNoAuth = async (req, res, next) => {
 
 export const userUpdate = async (req, res, next) => {
   try {
-    if (typeof req.body.address === "string" || req.body.socials === "string" ) {
-      req.body.address = JSON.parse(req.body.address);
-      req.body.socials = JSON.parse(req.body.socials);
-    }
+    // if (typeof req.body.address === "string" || req.body.socials === "string" ) {
+    //   req.body.address = JSON.parse(req.body.address);
+    //   req.body.socials = JSON.parse(req.body.socials);
+    // }
     const { error, value } = userUpdateValidator.validate({
       ...req.body,
       profilePicture: req.file?.filename,
