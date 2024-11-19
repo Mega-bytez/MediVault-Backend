@@ -25,7 +25,7 @@ export const addProductValidator = Joi.object({
   dosage: Joi.string().required(),
   image: Joi.array().optional(),
   thumbImage: Joi.string().allow(null, '').optional(),
-  price: Joi.string(),
+  price: Joi.number(),
   stockQuantity: Joi.number(),
   expiryDate: Joi.date().iso().required(),
   precautions: Joi.string(),
