@@ -6,9 +6,9 @@ import {
 
 export const addProduct = async (req, res, next) => {
   try {
-    if (!req.files || req.files.length === 0) {
-      return res.status(404).json("No file added");
-    }
+    // if (!req.files || req.files.length === 0) {
+    //   return res.status(404).json("No file added");
+    // }
     const { error, value } = addProductValidator.validate({
       ...req.body,
       image: req?.files?.image
