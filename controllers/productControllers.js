@@ -38,7 +38,8 @@ export const getAllProduct = async (req, res, next) => {
     const product = await ProductModel.find(JSON.parse(filter))
       .sort(JSON.parse(sort))
       .limit(limit)
-      .skip(skip);
+      .skip(skip)
+      .populate("user", "name id" );
     return res.status(200).json(product);
   } catch (error) {
     next(error);
@@ -116,7 +117,7 @@ export const updateProduct = async (req, res, next) => {
           : null,
     });
     const updatedProduct = await ProductModel.findOneAndUpdate(
-      { user: req.auth.id, _id: req.params.id, },
+      { user: req.auth.id, _id: req.params.id },
       value,
       { new: true }
     );

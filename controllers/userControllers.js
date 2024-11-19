@@ -44,9 +44,8 @@ export const userRegister = async (req, res, next) => {
       to: value.email,
       subject: "Registration with MedVault",
       html: signUpTemplate(`<p>${value.name} has been registered sucessfully with Medvault </p>
-      <p> Thank you for registering `,)
-      
-    })
+      <p> Thank you for registering `),
+    });
 
     return res
       .status(201)
