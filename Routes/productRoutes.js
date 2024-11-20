@@ -5,14 +5,16 @@ import { remoteUpload } from "../middlewares/uploads.js";
 
 const productRouter = Router()
 
-productRouter.post("/addProduct",  isAuthenticated, hasPermissions("add_VendorProduct"), remoteUpload.fields([{ name: "image", maxCount: 10 },{ name: "thumbImage", maxCount: 1 }]), addProduct);
-productRouter.get("/getAllProduct", getAllProduct);
-productRouter.get("/getOneProduct/:id", isAuthenticated, hasPermissions("view_OneProduct"), getOneProduct);
-productRouter.get("/vendorPro", isAuthenticated, hasPermissions("view_VendorProduct"), vendorProduct);
-productRouter.get("/vendorPro/:id", vendorProductNoId);
-productRouter.patch("/update/:id", isAuthenticated, hasPermissions("add_VendorProduct"), updateProduct);
-productRouter.delete("/delete/:id", isAuthenticated, hasPermissions("delete_VendorProduct"), deleteProduct);
-productRouter.get("/countVendor", isAuthenticated, hasPermissions("update_VendorProduct"), countProduct);
-productRouter.get("/countAllProduct", isAuthenticated, hasPermissions("count_AllProduct"), countAllProduct);
+productRouter.post("/products",  isAuthenticated, hasPermissions("add_VendorProduct"), remoteUpload.fields([{ name: "image", maxCount: 10 },{ name: "thumbImage", maxCount: 1 }]), addProduct);
+
+productRouter.get("/products", getAllProduct);
+productRouter.get("/products/me", isAuthenticated, hasPermissions("view_VendorProduct"), vendorProduct);
+productRouter.get("/products/count", isAuthenticated, hasPermissions("count_AllProduct"), countAllProduct);
+productRouter.get("/products/:id", getOneProduct);
+productRouter.get("/products/vendors/:id", vendorProductNoId);
+productRouter.patch("/products/:id", isAuthenticated, hasPermissions("update_VendorProduct"), remoteUpload.fields([{ name: "image", maxCount: 10 },{ name: "thumbImage", maxCount: 1 }]), updateProduct);
+productRouter.delete("/products/:id", isAuthenticated, hasPermissions("delete_VendorProduct"), deleteProduct);
+productRouter.get("/products/me/count", isAuthenticated, hasPermissions("count_VendorProduct"), countProduct);
+
 
 export default productRouter;

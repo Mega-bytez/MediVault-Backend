@@ -1,66 +1,67 @@
 import Joi from "joi";
 
 export const addProductValidator = Joi.object({
-  name: Joi.string().required(),
-  description: Joi.string().required(),
+  name: Joi.string(),
+  description: Joi.string(),
   category: Joi.string()
-    .required()
-    .valid(
-      "Over-the-Counter(Medications)",
-      "Vitamins and Supplements",
-      "Personal Care Product",
-      "Medical Equipments and devices",
-      "Lifestyle and Wellness",
-      "Sexual Health"
-    ),
+  .valid(
+    "Over-the-Counter(Medications)",
+    "Vitamins and Supplements",
+    "Personal Care Product",
+    "Medical Equipments and devices",
+    "Lifestyle and Wellness",
+    "Sexual Health"
+  ),
   brandName: Joi.string(),
-  manufacturer: Joi.string().required(),
-  dosage: Joi.string().required(),
-  strength: Joi.string().required(),
-  quantityPerPackage: Joi.string().required(),
-  prescriptionRequirements: Joi.string().required(),
-  countryOfOrigin: Joi.string().required(),
-  patient: Joi.string().valid("adult", "children", "Teenage"),
+  manufacturer: Joi.string(),
+  dosage: Joi.string(),
+  strength: Joi.string(),
+  quantityPerPackage: Joi.string(),
+  prescriptionRequirements: Joi.string(),
+  countryOfOrigin: Joi.string(),
+  patient: Joi.string().valid("adult", "children", "teenage"),
   symptoms: Joi.string(),
-  dosage: Joi.string().required(),
+  dosage: Joi.string(),
   image: Joi.array().optional(),
-  thumbImage: Joi.string().allow(null, '').optional(),
+  thumbImage: Joi.string().optional(),
   price: Joi.number(),
   stockQuantity: Joi.number(),
-  expiryDate: Joi.date().iso().required(),
+  expiryDate: Joi.string(),
   precautions: Joi.string(),
   sideEffect: Joi.string(),
   storageInstruction: Joi.string(),
 });
 
+// allow(null, '').iso()
+
 export const updateProductValidator = Joi.object({
-  name: Joi.string().required(),
-  description: Joi.string().required(),
+  name: Joi.string(),
+  description: Joi.string(),
   category: Joi.string()
-    .required()
-    .valid(
-      "Over-the-Counter(Medications)",
-      "Vitamins and Supplements",
-      "Personal Care Product",
-      "Medical Equipments and devices",
-      "Lifestyle and Wellness",
-      "Sexual Health"
-    ),
+  .valid(
+    "Over-the-Counter(Medications)",
+    "Vitamins and Supplements",
+    "Personal Care Product",
+    "Medical Equipments and devices",
+    "Lifestyle and Wellness",
+    "Sexual Health"
+  ),
   brandName: Joi.string(),
-  manufacturer: Joi.string().required(),
-  dosage: Joi.string().required(),
-  strength: Joi.string().required(),
-  quantityPerPackage: Joi.string().required(),
-  prescription: Joi.string().required(),
-  countryOfOrigin: Joi.string().required(),
-  audience: Joi.string().valid("adult", "children", "Teenage"),
+  manufacturer: Joi.string(),
+  dosage: Joi.string(),
+  strength: Joi.string(),
+  quantityPerPackage: Joi.string(),
+  prescriptionRequirements: Joi.string(),
+  countryOfOrigin: Joi.string(),
+  patient: Joi.string().valid("adult", "children", "teenage"),
   symptoms: Joi.string(),
-  dosage: Joi.string().required(),
+  dosage: Joi.string(),
   image: Joi.array().optional(),
-  thumbImage: Joi.string(),
-  price: Joi.string(),
+  thumbImage: Joi.string().optional(),
+  price: Joi.number(),
+  stockQuantity: Joi.number(),
   expiryDate: Joi.string(),
-  precaution: Joi.string(),
+  precautions: Joi.string(),
   sideEffect: Joi.string(),
   storageInstruction: Joi.string(),
 });

@@ -22,7 +22,7 @@ export const userRegister = async (req, res, next) => {
       backgroundImage: req.file?.filename,
     });
     if (error) {
-      return res.status(422).json(error);
+      return res.status(422).json(" Validation error", error.details);
     }
 
     // Check if the user already exists
@@ -61,17 +61,17 @@ export const userLogin = async (req, res, next) => {
     // validate details that was inputed
     const { error, value } = userLoginValidator.validate(req.body);
     if (error) {
-      return res.status(422).json(error);
+      return res.status(422).json(" Validation error", error.details);
     }
     // check if user is in the database with their email
     const user = await UserModel.findOne({ email: value.email });
     if (!user) {
-      return res.status(404).json("Invalid Credentials");
+      return res.status(401).json("Invalid Credentials");
     }
     // Check for the validity of the password
     const correctPassword = bcrypt.compare(value.password, user.password);
     if (!correctPassword) {
-      return res.status(404).json("Invalid Credentials");
+      return res.status(401).json("Invalid Credentials");
     }
     // Now generate a token for user after login
     const token = jwt.sign({ id: user.id }, process.env.JWT_PRIVATE_KEY, {
@@ -123,7 +123,7 @@ export const userUpdate = async (req, res, next) => {
       profilePicture: req.file?.filename,
     });
     if (error) {
-      return res.status(422).json(error);
+      return res.status(422).json(" Validation error", error.details);
     }
     const updateProfile = await UserModel.findByIdAndUpdate(
       req.auth.id,
@@ -131,10 +131,10 @@ export const userUpdate = async (req, res, next) => {
       { new: true }
     );
     if (!updateProfile) {
-      return res.status(404).json("Update was unsucessful");
+      return res.status(404).json("Update unsucessful: User Not found");
     }
     return res.status(200).json({
-      message: "Update is sucessful",
+      message: "Update sucessful",
       details: updateProfile,
     });
   } catch (error) {

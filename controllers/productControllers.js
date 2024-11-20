@@ -20,7 +20,7 @@ export const addProduct = async (req, res, next) => {
           : null,
     });
     if (error) {
-      res.status(422).json(error);
+      res.status(422).json(" Validation error", error.details);
     }
     const newProduct = await ProductModel.create({
       ...value,
@@ -116,15 +116,19 @@ export const updateProduct = async (req, res, next) => {
           ? req.files.thumbImage[0].filename
           : null,
     });
+    
+    if(error){
+      res.status(422).json({error: error.details[0].message})
+    }
     const updatedProduct = await ProductModel.findOneAndUpdate(
       { user: req.auth.id, _id: req.params.id },
       value,
       { new: true }
     );
     if (!updatedProduct) {
-      return res.status(404).json("Update wasn't succesful");
+      return res.status(404).json({message: "Update wasn't succesful"});
     }
-    res.status(200).json(updatedProduct);
+    res.status(200).json({message: "Successfully updated", product: updatedProduct});
   } catch (error) {
     next(error);
   }
@@ -137,9 +141,9 @@ export const deleteProduct = async (req, res, next) => {
       user: req.auth.id,
     });
     if (!deletedProduct) {
-      res.status(404).json("Nothing to delete");
+      res.status(404).json({message: "Nothing to delete"});
     }
-    res.status(200).json("User Deleted sucessfully");
+    res.status(200).json({message: "User Deleted sucessfully"});
   } catch (error) {
     next(error);
   }
